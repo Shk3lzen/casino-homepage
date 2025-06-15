@@ -1,215 +1,45 @@
 "use client"
-import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useAuth } from '@/hooks/useAuth';
+import Header from '@/components/layout/Header';
+import Sidebar from '@/components/layout/Sidebar';
+import HeroSlider from '@/components/sections/HeroSlider';
+import GameSections from '@/components/sections/GameSections';
+import Image from 'next/image';
 
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Toggle between logged-in and guest view
-  const [showUserMenu, setShowUserMenu] = useState(false); // Show/hide user dropdown menu
-  const userMenuRef = useRef<HTMLDivElement>(null);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setShowUserMenu(false);
-  };
-
-  // Close user menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
-        setShowUserMenu(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const { isLoggedIn, user, handleLogin, handleLogout } = useAuth();
 
   return (
     <div className="min-h-screen bg-slate-800 relative">
-
-
-      {/* Left Sidebar Menu */}
-      <aside 
-        className="w-[60px] bg-slate-900 border-r border-slate-600 flex flex-col items-center py-3 space-y-2 fixed left-0 top-0 bottom-0 overflow-y-auto hidden md:flex z-40"
-      >
-        <button className="w-8 h-8 bg-slate-700 hover:bg-slate-600 rounded-md flex items-center justify-center text-white text-sm">
-          ☰
-        </button>
-        
-        <div className="w-6 h-px bg-slate-600 my-1"></div>
-        
-        {/* Gaming Menu Icons */}
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          🎯
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          ⭐
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          🏆
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          7️⃣
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          ♠️
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          ⚙️
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          🎲
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          🚀
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          🌟
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          💎
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          🎰
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          💰
-        </button>
-        <button className="w-8 h-8 bg-slate-700 hover:bg-yellow-500 rounded-md flex items-center justify-center text-white hover:text-black transition-colors text-sm">
-          🌍
-        </button>
-      </aside>
+      <Sidebar />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col md:ml-[60px]">
-        {/* Header */}
-        <header className="bg-slate-900 border-b border-slate-700 h-[60px]">
-          <div className="flex items-center justify-between h-full px-4 md:px-6 w-full">
-            <div className="flex items-center space-x-2 md:space-x-4">
-              <div className="w-6 h-6 md:w-8 md:h-8 bg-gray-600 rounded"></div>
-              <div className="text-white font-bold text-lg md:text-xl">★★★★★ Casino</div>
-            </div>
-            
-            {isLoggedIn ? (
-              // Logged-in user header
-              <div className="flex items-center space-x-2 md:space-x-4 relative">
-                <div className="text-yellow-400 font-semibold text-sm md:text-base">$ 10,556.12</div>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 md:px-6 md:py-2 rounded font-semibold text-sm md:text-base">
-                  DEPOSIT
-                </button>
-                <button className="text-gray-400 hover:text-white text-lg md:text-xl">🔔</button>
-                <div className="relative" ref={userMenuRef}>
-                  <button 
-                    onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="w-6 h-6 md:w-8 md:h-8 bg-gray-600 rounded-full hover:bg-gray-500 transition-colors flex items-center justify-center text-sm"
-                  >
-                    👤
-                  </button>
-                  
-                  {/* User Dropdown Menu */}
-                  {showUserMenu && (
-                    <div className="absolute right-0 top-8 md:top-10 bg-slate-800 border border-slate-600 rounded-lg shadow-lg py-2 w-40 md:w-48 z-50">
-                      <div className="px-3 md:px-4 py-2 text-white border-b border-slate-600">
-                        <div className="font-semibold text-sm md:text-base">Welcome!</div>
-                        <div className="text-xs md:text-sm text-gray-400">Balance: $10,556.12</div>
-                      </div>
-                      <button className="w-full text-left px-3 md:px-4 py-2 text-gray-300 hover:bg-slate-700 hover:text-white text-sm">
-                        My Account
-                      </button>
-                      <button className="w-full text-left px-3 md:px-4 py-2 text-gray-300 hover:bg-slate-700 hover:text-white text-sm">
-                        Transaction History
-                      </button>
-                      <button className="w-full text-left px-3 md:px-4 py-2 text-gray-300 hover:bg-slate-700 hover:text-white text-sm">
-                        Settings
-                      </button>
-                      <div className="border-t border-slate-600 mt-2 pt-2">
-                        <button 
-                          onClick={handleLogout}
-                          className="w-full text-left px-3 md:px-4 py-2 text-red-400 hover:bg-slate-700 hover:text-red-300 text-sm"
-                        >
-                          Logout
-                        </button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ) : (
-              // Guest user header - Mobile optimized
-              <div className="flex items-center space-x-2 md:space-x-4">
-                <button 
-                  onClick={handleLogin}
-                  className="bg-transparent border border-blue-500 text-blue-400 px-3 py-1 md:px-4 md:py-2 rounded font-semibold hover:bg-blue-500 hover:text-white transition-colors text-sm md:text-base"
-                >
-                  LOG IN
-                </button>
-                <button 
-                  onClick={handleLogin}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 md:px-6 md:py-2 rounded font-semibold text-sm md:text-base"
-                >
-                  SIGN UP
-                </button>
-                <button className="text-gray-400 hover:text-white text-lg md:text-xl">🔔</button>
-              </div>
-            )}
-          </div>
-        </header>
+        <Header 
+          isLoggedIn={isLoggedIn}
+          user={user}
+          onLogin={handleLogin}
+          onLogout={handleLogout}
+        />
 
         <div className="flex flex-1">
           {/* Main Game Content */}
           <main className="flex-1 p-3 md:p-6 pb-20 md:pb-6">
-            {/* Primary Slider */}
-            <div 
-              className="mb-4 relative w-full max-w-[1200px] mx-auto px-2 md:px-0"
-              style={{
-                marginLeft: 'auto',
-                marginRight: 'auto'
-              }}
-            >
-              <div 
-                className="relative overflow-hidden w-full h-[200px] md:h-[300px] rounded-[5px]"
-              >
-                <Image
-                  src="/primary_slider.png"
-                  alt="Casino Primary Slider - Daily Rewards and Welcome Bonus"
-                  width={1200}
-                  height={300}
-                  className="w-full h-full object-cover"
-                  style={{ borderRadius: '5px' }}
-                  priority
-                />
-              </div>
-              
-              {/* Slider Navigation Dots */}
-              <div className="flex justify-center mt-2 md:mt-3 space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-              </div>
-            </div>
+            <HeroSlider />
 
             {/* Guest User CTA - Only shown to non-logged in users */}
             {!isLoggedIn && (
               <div className="mb-4 md:mb-6 mx-2 md:mx-0 max-w-[1200px] md:mx-auto">
-                {/* Mobile Login/Signup Buttons */}
                 <div className="flex flex-row gap-2 justify-center">
                   <button 
                     onClick={handleLogin}
-                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-bold text-base flex-1"
+                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-lg font-bold text-base flex-1 transition-colors"
                   >
                     LOG IN
                   </button>
                   <button 
                     onClick={handleLogin}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-bold text-base flex-1"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-lg font-bold text-base flex-1 transition-colors"
                   >
                     SIGN UP
                   </button>
@@ -218,17 +48,10 @@ export default function Home() {
             )}
 
             {/* Secondary Banners */}
-            <div 
-              className="mb-4 md:mb-6 w-full max-w-[1200px] mx-auto px-2 md:px-0"
-            >
-              {/* All Banners in One Row */}
+            <div className="mb-4 md:mb-6 w-full max-w-[1200px] mx-auto px-2 md:px-0">
               <div className="flex flex-col md:flex-row gap-2 md:gap-3">
-                {/* First Large Banner */}
-                <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform w-full md:w-[400px]"
-                     style={{ 
-                       height: '250px',
-                       borderRadius: '5px'
-                     }}>
+                {/* Large Banners */}
+                <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform w-full md:w-[400px] h-[250px]">
                   <Image
                     src="/1.png"
                     alt="Welcome Bonus 75 Free Spins"
@@ -239,12 +62,7 @@ export default function Home() {
                   />
                 </div>
                 
-                {/* Second Large Banner */}
-                <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform w-full md:w-[400px]"
-                     style={{ 
-                       height: '250px',
-                       borderRadius: '5px'
-                     }}>
+                <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform w-full md:w-[400px] h-[250px]">
                   <Image
                     src="/2.png"
                     alt="Cash Back Promotion"
@@ -255,71 +73,23 @@ export default function Home() {
                   />
                 </div>
                 
-                {/* Right Side - 4 Small Banners in 2x2 Grid */}
+                {/* Small Banners Grid */}
                 <div className="grid grid-cols-2 gap-3 w-full md:w-auto">
-                  {/* Tournament $2,000,000 */}
-                  <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform w-full md:w-[185px]"
-                       style={{ 
-                         height: '120px',
-                         borderRadius: '5px'
-                       }}>
-                    <Image
-                      src="/3.png"
-                      alt="$2,000,000 Tournament Drops & Wins"
-                      width={185}
-                      height={120}
-                      className="w-full h-full object-cover"
-                      style={{ borderRadius: '5px' }}
-                    />
-                  </div>
-                  
-                  {/* Wager Race */}
-                  <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform w-full md:w-[185px]"
-                       style={{ 
-                         height: '120px',
-                         borderRadius: '5px'
-                       }}>
-                    <Image
-                      src="/4.png"
-                      alt="Wager Race - Wager Win Repeat"
-                      width={185}
-                      height={120}
-                      className="w-full h-full object-cover"
-                      style={{ borderRadius: '5px' }}
-                    />
-                  </div>
-                  
-                  {/* Octoplay */}
-                  <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform w-full md:w-[185px]"
-                       style={{ 
-                         height: '120px',
-                         borderRadius: '5px'
-                       }}>
-                    <Image
-                      src="/5.png"
-                      alt="Octoplay - Bold Games New Wins"
-                      width={185}
-                      height={120}
-                      className="w-full h-full object-cover"
-                      style={{ borderRadius: '5px' }}
-                    />
-                  </div>
-                  
-                  {/* Big Time Gaming */}
-                  <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform w-full md:w-[185px]"
-                       style={{ 
-                         height: '120px',
-                         borderRadius: '5px'
-                       }}>
-                    <Image
-                      src="/6.png"
-                      alt="Big Time Gaming - Play Big Win Bigger"
-                      width={185}
-                      height={120}
-                      className="w-full h-full object-cover"
-                      style={{ borderRadius: '5px' }}
-                    />
-                  </div>
+                  {[3, 4, 5, 6].map((num) => (
+                    <div 
+                      key={num}
+                      className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform w-full md:w-[185px] h-[120px]"
+                    >
+                      <Image
+                        src={`/${num}.png`}
+                        alt={`Promotion Banner ${num}`}
+                        width={185}
+                        height={120}
+                        className="w-full h-full object-cover"
+                        style={{ borderRadius: '5px' }}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -351,75 +121,9 @@ export default function Home() {
                 />
               </div>
             </div>
-            {/* Featured Games */}
-            <section className="mb-6 md:mb-8 w-full max-w-[1200px] mx-auto px-2 md:px-0">
-              <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform">
-                <Image
-                  src="/full_game_row.png"
-                  alt="Featured Games Row"
-                  width={1200}
-                  height={245}
-                  className="w-full h-auto object-cover min-h-[120px] md:min-h-[245px]"
-                  style={{ borderRadius: '5px' }}
-                />
-              </div>
-            </section>
 
-            {/* New Releases */}
-            <section className="mb-6 md:mb-8 w-full max-w-[1200px] mx-auto px-2 md:px-0">
-              <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform">
-                <Image
-                  src="/full_game_row12.png"
-                  alt="New Releases Games Row"
-                  width={1200}
-                  height={245}
-                  className="w-full h-auto object-cover min-h-[120px] md:min-h-[245px]"
-                  style={{ borderRadius: '5px' }}
-                />
-              </div>
-            </section>
-
-            {/* Hot Games */}
-            <section className="mb-6 md:mb-8 w-full max-w-[1200px] mx-auto px-2 md:px-0">
-              <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform">
-                <Image
-                  src="/full_game_row13.png"
-                  alt="Hot Games Row"
-                  width={1200}
-                  height={245}
-                  className="w-full h-auto object-cover min-h-[120px] md:min-h-[245px]"
-                  style={{ borderRadius: '5px' }}
-                />
-              </div>
-            </section>
-
-            {/* Bonus Buy */}
-            <section className="mb-6 md:mb-8 w-full max-w-[1200px] mx-auto px-2 md:px-0">
-              <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform">
-                <Image
-                  src="/full_game_row14.png"
-                  alt="Bonus Buy Games Row"
-                  width={1200}
-                  height={245}
-                  className="w-full h-auto object-cover min-h-[120px] md:min-h-[245px]"
-                  style={{ borderRadius: '5px' }}
-                />
-              </div>
-            </section>
-
-            {/* Live Games */}
-            <section className="mb-6 md:mb-8 w-full max-w-[1200px] mx-auto px-2 md:px-0">
-              <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform">
-                <Image
-                  src="/full_game_row15.png"
-                  alt="Live Games Row"
-                  width={1200}
-                  height={245}
-                  className="w-full h-auto object-cover min-h-[120px] md:min-h-[245px]"
-                  style={{ borderRadius: '5px' }}
-                />
-              </div>
-            </section>
+            {/* Game Sections */}
+            <GameSections />
 
             {/* All Games */}
             <section className="mb-6 md:mb-8 w-full max-w-[1200px] mx-auto px-2 md:px-0">
@@ -455,26 +159,21 @@ export default function Home() {
         {!isLoggedIn && (
           <nav className="md:hidden bg-slate-900 border-t border-slate-700 px-4 py-2 fixed bottom-0 left-0 right-0 z-50">
             <div className="flex justify-around items-center">
-              <button className="flex flex-col items-center space-y-1 text-yellow-500" aria-label="Home">
-                <span className="text-lg">🏠</span>
-                <span className="text-xs">Home</span>
-              </button>
-              <button className="flex flex-col items-center space-y-1 text-gray-400" aria-label="Search">
-                <span className="text-lg">🔍</span>
-                <span className="text-xs">Search</span>
-              </button>
-              <button className="flex flex-col items-center space-y-1 text-gray-400" aria-label="Chat">
-                <span className="text-lg">💬</span>
-                <span className="text-xs">Chat</span>
-              </button>
-              <button className="flex flex-col items-center space-y-1 text-gray-400" aria-label="Support">
-                <span className="text-lg">📞</span>
-                <span className="text-xs">Support</span>
-              </button>
-              <button className="flex flex-col items-center space-y-1 text-gray-400" aria-label="Menu">
-                <span className="text-lg">☰</span>
-                <span className="text-xs">Menu</span>
-              </button>
+              {['🏠', '🔍', '💬', '📞', '☰'].map((icon, index) => {
+                const labels = ['Home', 'Search', 'Chat', 'Support', 'Menu'];
+                return (
+                  <button 
+                    key={index}
+                    className={`flex flex-col items-center space-y-1 ${
+                      index === 0 ? 'text-yellow-500' : 'text-gray-400'
+                    }`}
+                    aria-label={labels[index]}
+                  >
+                    <span className="text-lg">{icon}</span>
+                    <span className="text-xs">{labels[index]}</span>
+                  </button>
+                );
+              })}
             </div>
           </nav>
         )}
@@ -484,8 +183,7 @@ export default function Home() {
           <div className="w-full">
             {/* Casino Description */}
             <div className="mb-6 md:mb-8 w-full max-w-[1200px] mx-auto px-2 md:px-0">
-              <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform"
-                   style={{ border: '1px solid #475569' }}>
+              <div className="relative overflow-hidden cursor-pointer hover:scale-105 transition-transform border border-slate-600" style={{ borderRadius: '5px' }}>
                 <Image
                   src="/on_ramp1.png"
                   alt="Casino Description"
